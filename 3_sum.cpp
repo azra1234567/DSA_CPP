@@ -1,13 +1,47 @@
 class Solution {
 public:
-    bool isPowerOfThree(int n) {
+    vector<vector<int>> threeSum(vector<int>& nums) {
+        vector<vector<int>> ans;
+        sort(nums.begin(), nums.end());
 
-        if (n == 1)
-            return true;
+        int n = nums.size();
 
-        if (n <= 0 || n % 3 != 0)
-            return false;
+        for (int i = 0; i < n - 2; i++) {
 
-        return isPowerOfThree(n / 3);
+            // Skip duplicate first elements
+            if (i > 0 && nums[i] == nums[i - 1])
+                continue;
+
+            int left = i + 1;
+            int right = n - 1;
+
+            while (left < right) {
+
+                int sum = nums[i] + nums[left] + nums[right];
+
+                if (sum == 0) {
+                    ans.push_back({nums[i], nums[left], nums[right]});
+
+                    left++;
+                    right--;
+
+                    // Skip duplicate second elements
+                    while (left < right && nums[left] == nums[left - 1])
+                        left++;
+
+                    // Skip duplicate third elements
+                    while (left < right && nums[right] == nums[right + 1])
+                        right--;
+                }
+                else if (sum < 0) {
+                    left++;
+                }
+                else {
+                    right--;
+                }
+            }
+        }
+
+        return ans;
     }
 };
